@@ -103,6 +103,10 @@ class Map {
     }
 
     generateSpaceMap() {
+        const ASTEROID_COUNT = 15;
+        const MIN_ASTEROID_SIZE = 2;
+        const MAX_ASTEROID_SIZE = 5;
+        
         // Create an open space map
         for (let y = 0; y < this.height; y++) {
             for (let x = 0; x < this.width; x++) {
@@ -111,10 +115,10 @@ class Map {
         }
         
         // Add some asteroids (walls in space)
-        for (let i = 0; i < 15; i++) {
+        for (let i = 0; i < ASTEROID_COUNT; i++) {
             const x = Math.floor(Math.random() * this.width);
             const y = Math.floor(Math.random() * this.height);
-            const size = 2 + Math.floor(Math.random() * 3);
+            const size = MIN_ASTEROID_SIZE + Math.floor(Math.random() * (MAX_ASTEROID_SIZE - MIN_ASTEROID_SIZE));
             
             for (let dy = 0; dy < size; dy++) {
                 for (let dx = 0; dx < size; dx++) {

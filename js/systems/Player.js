@@ -38,14 +38,20 @@ class Player extends Entity {
     }
 
     applyFactionBonuses() {
+        // Ensure stats are initialized before applying bonuses
+        if (!this.maxHealth || !this.maxShield || !this.maxEnergy) {
+            console.warn('Stats not initialized before applying faction bonuses');
+            return;
+        }
+        
         switch(this.faction.toLowerCase()) {
             case 'caldari':
-                this.maxShield *= 1.25;
+                this.maxShield = Math.floor(this.maxShield * 1.25);
                 this.shield = this.maxShield;
                 this.skills.shields += 1;
                 break;
             case 'gallente':
-                this.maxHealth *= 1.2;
+                this.maxHealth = Math.floor(this.maxHealth * 1.2);
                 this.health = this.maxHealth;
                 this.skills.armor += 1;
                 break;
@@ -54,7 +60,7 @@ class Player extends Entity {
                 this.skills.navigation += 1;
                 break;
             case 'amarr':
-                this.maxEnergy *= 1.3;
+                this.maxEnergy = Math.floor(this.maxEnergy * 1.3);
                 this.energy = this.maxEnergy;
                 this.skills.engineering += 1;
                 break;

@@ -71,11 +71,11 @@ class GameEngine {
         this.player.addItem('tritanium');
         this.player.addItem('nanite_paste');
         
+        // Start first campaign (before creating NPCs so dialogue is available)
+        this.campaign = new Campaign('rogue_drones');
+        
         // Create NPCs
         this.createNPCs();
-        
-        // Start first campaign
-        this.campaign = new Campaign('rogue_drones');
         
         // Update UI
         this.updateHUD();
@@ -198,13 +198,13 @@ class GameEngine {
         // Inventory
         if (this.input.isKeyPressed('i')) {
             this.inventory.toggle(this.player, this.assetManager);
-            this.input.keys['i'] = false; // Prevent repeated toggling
+            this.input.resetKey('i'); // Prevent repeated toggling
         }
         
         // Interaction
         if (this.input.isKeyPressed('e')) {
             this.tryInteract();
-            this.input.keys['e'] = false;
+            this.input.resetKey('e');
         }
         
         // Attack (space bar)

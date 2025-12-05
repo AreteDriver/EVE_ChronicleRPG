@@ -97,8 +97,9 @@ class NPC extends Entity {
                     const direction = player.position.subtract(this.position).normalize();
                     this.move(direction);
                 } else {
-                    // In attack range
+                    // In attack range - stop and prepare to attack
                     this.stop();
+                    // Actual attack is handled in GameEngine.update() to control attack rate
                 }
             } else {
                 this.aiState = 'idle';

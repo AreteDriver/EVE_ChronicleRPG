@@ -100,9 +100,12 @@ class Combat {
                 return false;
             }
             
-            // Continue applying damage/heal over time effects
+            // Apply damage/heal over time effects at 1 second intervals
             if (effect.type === 'damage_over_time' || effect.type === 'heal_over_time') {
-                this.applyEffectToEntity(effect);
+                if (!effect.lastTick || (now - effect.lastTick) >= 1000) {
+                    this.applyEffectToEntity(effect);
+                    effect.lastTick = now;
+                }
             }
             
             return true;

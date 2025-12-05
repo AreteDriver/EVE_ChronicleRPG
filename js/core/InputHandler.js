@@ -16,7 +16,7 @@ class InputHandler {
             this.keys[e.key.toLowerCase()] = true;
             
             // Prevent default for game controls
-            if (['w', 'a', 's', 'd', 'arrowup', 'arrowdown', 'arrowleft', 'arrowright', 'i', 'e'].includes(e.key.toLowerCase())) {
+            if (['w', 'a', 's', 'd', 'arrowup', 'arrowdown', 'arrowleft', 'arrowright', 'i', 'e', ' '].includes(e.key.toLowerCase())) {
                 e.preventDefault();
             }
         });
@@ -75,5 +75,9 @@ class InputHandler {
     reset() {
         this.keys = {};
         this.mouseClick = false;
+    }
+
+    resetKey(key) {
+        this.keys[key.toLowerCase()] = false;
     }
 }
