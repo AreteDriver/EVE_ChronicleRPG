@@ -1,6 +1,6 @@
 # EVE Chronicle RPG
 
-🎮 **[Play in Browser](https://AreteDriver.github.io/EVE_ChronicleRPG/)** | 📖 [Documentation](#documentation) | 🚀 [Getting Started](#getting-started)
+🎮 **[Play in Browser](https://AreteDriver.github.io/EVE_ChronicleRPG/)** | 📖 [Documentation](#documentation) | 🚀 [Quick Start](QUICKSTART.md) | 💻 [Contributing](CONTRIBUTING.md)
 
 A flexible RPG framework inspired by EVE Online's rich narrative universe. Build your own space-themed adventures with branching dialogues, quest systems, and faction mechanics.
 
