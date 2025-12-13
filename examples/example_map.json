@@ -1,0 +1,61 @@
+{
+  "name": "Caldari Station - Deck Alpha",
+  "width": 20,
+  "height": 15,
+  "tile_size": 32,
+  "layers": [
+    {
+      "name": "floor",
+      "data": "Floor tile data would go here"
+    },
+    {
+      "name": "walls",
+      "data": "Wall tile data would go here"
+    }
+  ],
+  "collisions": [
+    [0, 0], [1, 0], [2, 0], [3, 0],
+    [0, 14], [1, 14], [2, 14], [3, 14]
+  ],
+  "npcs": [
+    {
+      "id": "station_officer",
+      "name": "Security Officer",
+      "position": [10, 7],
+      "dialogue": "examples/demo_dialogue.json",
+      "sprite": "officer.png"
+    },
+    {
+      "id": "merchant",
+      "name": "Trade Merchant",
+      "position": [15, 10],
+      "dialogue": "merchant_dialogue.json",
+      "sprite": "merchant.png"
+    }
+  ],
+  "interactables": [
+    {
+      "id": "terminal",
+      "position": [5, 5],
+      "type": "computer",
+      "action": "open_market"
+    },
+    {
+      "id": "door_exit",
+      "position": [10, 0],
+      "type": "door",
+      "action": "change_map",
+      "target": "station_deck_beta"
+    }
+  ],
+  "events": [
+    {
+      "id": "welcome_trigger",
+      "position": [10, 12],
+      "trigger": "on_enter",
+      "action": "start_chronicle",
+      "chronicle_id": "welcome_chronicle",
+      "one_time": true
+    }
+  ]
+}

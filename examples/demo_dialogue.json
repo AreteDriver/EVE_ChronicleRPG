@@ -1,0 +1,80 @@
+{
+  "start": "greeting",
+  "nodes": {
+    "greeting": {
+      "text": "Greetings, capsuleer. Welcome to New Eden. I represent the diplomatic corps. How may I assist you today?",
+      "choices": [
+        {
+          "text": "Tell me about the factions.",
+          "next": "factions"
+        },
+        {
+          "text": "I'd like to explore the galaxy.",
+          "next": "explore"
+        },
+        {
+          "text": "Farewell.",
+          "next": null
+        }
+      ]
+    },
+    "factions": {
+      "text": "The four major empires shape New Eden: Caldari (corporate efficiency), Gallente (democracy and freedom), Amarr (religious devotion), and Minmatar (freedom fighters). Each offers unique opportunities.",
+      "choices": [
+        {
+          "text": "I support the Caldari cause.",
+          "next": "caldari_support",
+          "effect": {
+            "faction": {
+              "Caldari": 5
+            }
+          }
+        },
+        {
+          "text": "The Gallente ideals resonate with me.",
+          "next": "gallente_support",
+          "effect": {
+            "faction": {
+              "Gallente": 5
+            }
+          }
+        },
+        {
+          "text": "Tell me more about exploration.",
+          "next": "explore"
+        }
+      ]
+    },
+    "caldari_support": {
+      "text": "An excellent choice. The State values your loyalty. Your standing with Caldari has increased.",
+      "choices": [
+        {
+          "text": "Thank you.",
+          "next": "greeting"
+        }
+      ]
+    },
+    "gallente_support": {
+      "text": "The Federation welcomes all who cherish liberty. Your standing with Gallente has increased.",
+      "choices": [
+        {
+          "text": "Thank you.",
+          "next": "greeting"
+        }
+      ]
+    },
+    "explore": {
+      "text": "New Eden is vast with countless star systems to discover. Chronicles await brave capsuleers willing to forge their own destiny.",
+      "choices": [
+        {
+          "text": "I'm ready for adventure.",
+          "next": null
+        },
+        {
+          "text": "Tell me about the factions first.",
+          "next": "factions"
+        }
+      ]
+    }
+  }
+}
