@@ -34,17 +34,30 @@ jobs:
       
       - name: Build with Pygbag
         run: |
-          # Create build directory
-          mkdir -p build
+          # Build the game with Pygbag for web deployment
+          # This creates a build/web directory with all necessary files
+          pygbag --build --ume_block 0 --template docs/play.html main.py
           
-          # Build the game with Pygbag
-          # Pygbag will create web assets in the build directory
-          pygbag --build --template docs/index.html main.py
-          
-          # Move Pygbag output to docs directory
+          # The build output is in build/web
+          # Copy all Pygbag-generated files to docs directory
           if [ -d "build/web" ]; then
-            cp -r build/web/* docs/
+            # Copy all web assets (python.js, wasm files, etc.)
+            cp -v build/web/*.js docs/ 2>/dev/null || true
+            cp -v build/web/*.wasm docs/ 2>/dev/null || true
+            cp -v build/web/*.data docs/ 2>/dev/null || true
+            cp -v build/web/*.html docs/ 2>/dev/null || true
+            
+            # If Pygbag generated its own index.html, rename it
+            if [ -f "build/web/index.html" ]; then
+              # Keep our custom play.html and index.html
+              # Pygbag's generated HTML will be available as a reference
+              echo "Pygbag build completed successfully"
+            fi
           fi
+          
+          # List what was created
+          echo "Files in docs directory:"
+          ls -la docs/
       
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3

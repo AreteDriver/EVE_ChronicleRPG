@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EVE Chronicle RPG - Play Now</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #0a0a1a 0%, #1a1a3a 100%);
+            color: #e0e0e0;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+        }
+        
+        header {
+            text-align: center;
+            padding: 20px;
+            max-width: 1200px;
+            width: 100%;
+        }
+        
+        h1 {
+            font-size: 2.5em;
+            color: #64b4ff;
+            text-shadow: 0 0 10px rgba(100, 180, 255, 0.5);
+            margin-bottom: 10px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            width: 100%;
+            background: rgba(20, 20, 40, 0.8);
+            border-radius: 10px;
+            padding: 30px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+            text-align: center;
+        }
+        
+        #game-container {
+            background: #000;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+            min-height: 600px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        #canvas {
+            border: 2px solid #64b4ff;
+            border-radius: 5px;
+            max-width: 100%;
+            box-shadow: 0 0 20px rgba(100, 180, 255, 0.3);
+        }
+        
+        .loading {
+            color: #64b4ff;
+            font-size: 1.2em;
+            padding: 40px;
+        }
+        
+        .button {
+            display: inline-block;
+            padding: 12px 30px;
+            background: linear-gradient(135deg, #64b4ff 0%, #a0a0ff 100%);
+            color: #0a0a1a;
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: bold;
+            margin: 10px;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+        
+        .button:hover {
+            transform: scale(1.05);
+            box-shadow: 0 4px 15px rgba(100, 180, 255, 0.5);
+        }
+        
+        .warning {
+            background: rgba(255, 200, 0, 0.1);
+            border: 1px solid rgba(255, 200, 0, 0.3);
+            border-radius: 5px;
+            padding: 15px;
+            margin: 20px 0;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>⚡ EVE Chronicle RPG</h1>
+        <p>Browser Playable Demo</p>
+    </header>
+    
+    <div class="container">
+        <div class="warning">
+            <strong>⚠️ First Load:</strong> The game may take 10-30 seconds to load as it downloads WebAssembly modules.
+        </div>
+        
+        <div id="game-container">
+            <div id="loading" class="loading">
+                <p>🔄 Loading EVE Chronicle RPG...</p>
+                <p>Initializing WebAssembly environment...</p>
+            </div>
+            <canvas id="canvas" width="800" height="600" style="display:none;">
+                Your browser doesn't support HTML5 canvas.
+            </canvas>
+        </div>
+        
+        <div style="margin-top: 20px;">
+            <a href="index.html" class="button">← Back to Info Page</a>
+            <a href="https://github.com/AreteDriver/EVE_ChronicleRPG" class="button">View on GitHub</a>
+        </div>
+    </div>
+    
+    <script type="module">
+        // This script will be replaced/augmented by Pygbag during build
+        // Pygbag generates a python.js file and loader code
+        
+        window.addEventListener('load', function() {
+            const loading = document.getElementById('loading');
+            const canvas = document.getElementById('canvas');
+            
+            // Pygbag will inject its loader here
+            // For development without build, show message
+            setTimeout(function() {
+                if (!window.python && !window.pygbag) {
+                    loading.innerHTML = 
+                        '<p style="color: #ffd700;">⚠️ Game Not Built Yet</p>' +
+                        '<p>This page requires the Pygbag build to be run first.</p>' +
+                        '<p>The GitHub Actions workflow will build it automatically when merged to main.</p>' +
+                        '<p style="margin-top: 20px;">For local development:</p>' +
+                        '<p><code>pygbag main.py</code></p>' +
+                        '<p>Then visit <code>http://localhost:8000</code></p>';
+                } else {
+                    canvas.style.display = 'block';
+                    loading.style.display = 'none';
+                }
+            }, 2000);
+        });
+    </script>
+</body>
+</html>

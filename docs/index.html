@@ -228,16 +228,10 @@
             <div class="warning">
                 <strong>⚠️ First-time Loading:</strong> The game may take 10-30 seconds to load on your first visit as it downloads the required WebAssembly modules. Please be patient!
             </div>
-        </div>
-        
-        <div class="game-container">
-            <div id="loading-message" class="loading">
-                <p>🔄 Loading EVE Chronicle RPG...</p>
-                <p>Please wait while the game initializes...</p>
+            
+            <div style="text-align: center; margin: 30px 0;">
+                <a href="play.html" class="button" style="font-size: 1.2em; padding: 15px 40px;">▶️ Launch Game</a>
             </div>
-            <canvas id="game-canvas" width="800" height="600" style="display:none;">
-                Your browser doesn't support HTML5 canvas. Please use a modern browser.
-            </canvas>
         </div>
         
         <div class="info-section">
@@ -370,26 +364,6 @@
         <p>Licensed under MIT License | EVE Online™ is a trademark of CCP hf.</p>
         <p>This is a fan project not affiliated with CCP Games</p>
     </footer>
-    
-    <script>
-        // This will be replaced with actual Pygbag loader script when deployed
-        window.addEventListener('load', function() {
-            const canvas = document.getElementById('game-canvas');
-            const loadingMessage = document.getElementById('loading-message');
-            
-            // Show a message that the game would load here
-            setTimeout(function() {
-                loadingMessage.innerHTML = '<p style="color: #ffd700;">⚠️ Pygbag Integration Required</p>' +
-                    '<p>To enable browser gameplay, this repository needs to be built with Pygbag.</p>' +
-                    '<p>See the GitHub Actions workflow for automated deployment.</p>' +
-                    '<p style="margin-top: 20px;">In the meantime, you can:</p>' +
-                    '<ul style="text-align: left; display: inline-block;">' +
-                    '<li>Clone the repository</li>' +
-                    '<li>Install dependencies: <code>pip install -r requirements.txt</code></li>' +
-                    '<li>Run locally: <code>python main.py</code></li>' +
-                    '</ul>';
-            }, 1000);
-        });
-    </script>
+
 </body>
 </html>
