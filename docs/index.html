@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EVE Chronicle RPG - Browser Demo</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #0a0a1a 0%, #1a1a3a 100%);
+            color: #e0e0e0;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+        }
+        
+        header {
+            text-align: center;
+            padding: 30px 20px;
+            max-width: 1200px;
+            width: 100%;
+        }
+        
+        h1 {
+            font-size: 3em;
+            color: #64b4ff;
+            text-shadow: 0 0 10px rgba(100, 180, 255, 0.5);
+            margin-bottom: 10px;
+        }
+        
+        .tagline {
+            font-size: 1.2em;
+            color: #a0a0ff;
+            margin-bottom: 20px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            width: 100%;
+            background: rgba(20, 20, 40, 0.8);
+            border-radius: 10px;
+            padding: 30px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+            margin-bottom: 20px;
+        }
+        
+        .game-container {
+            background: #000;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+            text-align: center;
+        }
+        
+        #game-canvas {
+            border: 2px solid #64b4ff;
+            border-radius: 5px;
+            max-width: 100%;
+            height: auto;
+            box-shadow: 0 0 20px rgba(100, 180, 255, 0.3);
+        }
+        
+        .info-section {
+            margin: 20px 0;
+        }
+        
+        .info-section h2 {
+            color: #64b4ff;
+            margin-bottom: 15px;
+            font-size: 1.8em;
+            border-bottom: 2px solid #64b4ff;
+            padding-bottom: 10px;
+        }
+        
+        .info-section h3 {
+            color: #a0a0ff;
+            margin-top: 20px;
+            margin-bottom: 10px;
+            font-size: 1.3em;
+        }
+        
+        .info-section p, .info-section ul {
+            line-height: 1.8;
+            margin-bottom: 15px;
+            color: #d0d0d0;
+        }
+        
+        .info-section ul {
+            padding-left: 30px;
+        }
+        
+        .info-section li {
+            margin-bottom: 8px;
+        }
+        
+        .controls-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 15px;
+            margin: 20px 0;
+        }
+        
+        .control-item {
+            background: rgba(100, 180, 255, 0.1);
+            padding: 15px;
+            border-radius: 5px;
+            border: 1px solid rgba(100, 180, 255, 0.3);
+        }
+        
+        .control-key {
+            font-weight: bold;
+            color: #ffd700;
+            font-family: monospace;
+            font-size: 1.1em;
+        }
+        
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+            margin: 20px 0;
+        }
+        
+        .feature-card {
+            background: linear-gradient(135deg, rgba(100, 180, 255, 0.1) 0%, rgba(160, 160, 255, 0.1) 100%);
+            padding: 20px;
+            border-radius: 8px;
+            border: 1px solid rgba(100, 180, 255, 0.3);
+            transition: transform 0.3s ease;
+        }
+        
+        .feature-card:hover {
+            transform: translateY(-5px);
+            border-color: #64b4ff;
+        }
+        
+        .feature-card h3 {
+            color: #64b4ff;
+            margin-bottom: 10px;
+        }
+        
+        code {
+            background: rgba(0, 0, 0, 0.4);
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: 'Courier New', monospace;
+            color: #ffd700;
+        }
+        
+        .button {
+            display: inline-block;
+            padding: 12px 30px;
+            background: linear-gradient(135deg, #64b4ff 0%, #a0a0ff 100%);
+            color: #0a0a1a;
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: bold;
+            margin: 10px;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+        
+        .button:hover {
+            transform: scale(1.05);
+            box-shadow: 0 4px 15px rgba(100, 180, 255, 0.5);
+        }
+        
+        .warning {
+            background: rgba(255, 200, 0, 0.1);
+            border: 1px solid rgba(255, 200, 0, 0.3);
+            border-radius: 5px;
+            padding: 15px;
+            margin: 20px 0;
+        }
+        
+        .warning strong {
+            color: #ffd700;
+        }
+        
+        footer {
+            margin-top: 40px;
+            padding: 20px;
+            text-align: center;
+            color: #808080;
+            border-top: 1px solid rgba(100, 180, 255, 0.3);
+            width: 100%;
+            max-width: 1200px;
+        }
+        
+        .loading {
+            color: #64b4ff;
+            font-style: italic;
+        }
+        
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2em;
+            }
+            
+            .tagline {
+                font-size: 1em;
+            }
+            
+            .container {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>⚡ EVE Chronicle RPG</h1>
+        <p class="tagline">Experience the framework in your browser - No installation required!</p>
+    </header>
+    
+    <div class="container">
+        <div class="info-section">
+            <h2>🎮 Play the Demo</h2>
+            <p>This is a browser-based demonstration of the EVE Chronicle RPG framework. The game runs entirely in your browser using WebAssembly technology.</p>
+            
+            <div class="warning">
+                <strong>⚠️ First-time Loading:</strong> The game may take 10-30 seconds to load on your first visit as it downloads the required WebAssembly modules. Please be patient!
+            </div>
+            
+            <div style="text-align: center; margin: 30px 0;">
+                <a href="play.html" class="button" style="font-size: 1.2em; padding: 15px 40px;">▶️ Launch Game</a>
+            </div>
+        </div>
+        
+        <div class="info-section">
+            <h2>🎯 Controls</h2>
+            <div class="controls-grid">
+                <div class="control-item">
+                    <span class="control-key">↑ UP ARROW</span>
+                    <p>Navigate menu up / Select previous dialogue option</p>
+                </div>
+                <div class="control-item">
+                    <span class="control-key">↓ DOWN ARROW</span>
+                    <p>Navigate menu down / Select next dialogue option</p>
+                </div>
+                <div class="control-item">
+                    <span class="control-key">ENTER / SPACE</span>
+                    <p>Confirm selection / Advance dialogue</p>
+                </div>
+                <div class="control-item">
+                    <span class="control-key">ANY KEY</span>
+                    <p>Continue from instructions screen</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="info-section">
+            <h2>✨ Features Demonstrated</h2>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <h3>🗣️ Dialogue System</h3>
+                    <p>Branching conversations with multiple choice responses. Each choice can affect your faction standings and game state.</p>
+                </div>
+                <div class="feature-card">
+                    <h3>📜 Quest Management</h3>
+                    <p>Chronicle tracking system that monitors your progress through various story arcs and missions.</p>
+                </div>
+                <div class="feature-card">
+                    <h3>⚖️ Faction Reputation</h3>
+                    <p>Dynamic reputation system with the four major EVE empires: Caldari, Gallente, Amarr, and Minmatar.</p>
+                </div>
+                <div class="feature-card">
+                    <h3>🎭 State Management</h3>
+                    <p>Flexible state machine for managing game screens, menus, and dialogue interactions.</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="info-section">
+            <h2>🚀 Getting Started</h2>
+            <h3>For Players:</h3>
+            <ol>
+                <li>Wait for the game to load (first time may take longer)</li>
+                <li>Read the instructions screen that appears on startup</li>
+                <li>Use arrow keys to navigate menus and dialogue options</li>
+                <li>Press ENTER or SPACE to make selections</li>
+                <li>Experiment with different dialogue choices to see how they affect your faction standings</li>
+            </ol>
+            
+            <h3>For Developers:</h3>
+            <p>This demo showcases the EVE Chronicle RPG framework which includes:</p>
+            <ul>
+                <li><code>core/state_manager.py</code> - Stack-based state management system</li>
+                <li><code>systems/dialogue_engine.py</code> - JSON-driven dialogue trees with conditions and effects</li>
+                <li><code>systems/quest_manager.py</code> - Chronicle/quest tracking and progression</li>
+                <li><code>world/maps/map_data.py</code> - Map data structure with NPCs and events</li>
+            </ul>
+            
+            <h3>Extending the Framework:</h3>
+            <p>You can extend this framework by:</p>
+            <ul>
+                <li>Creating custom dialogue JSON files with your own stories</li>
+                <li>Adding new game states for different scenes (combat, trading, exploration)</li>
+                <li>Implementing map-based gameplay using the MapData system</li>
+                <li>Expanding the faction system with more complex relationships</li>
+                <li>Adding inventory management, item systems, and character progression</li>
+            </ul>
+        </div>
+        
+        <div class="info-section">
+            <h2>📚 Resources</h2>
+            <p>
+                <a href="https://github.com/AreteDriver/EVE_ChronicleRPG" class="button">View on GitHub</a>
+                <a href="https://github.com/AreteDriver/EVE_ChronicleRPG/blob/main/README.md" class="button">Documentation</a>
+            </p>
+        </div>
+        
+        <div class="info-section">
+            <h2>🔧 Technical Details</h2>
+            <p>This browser version uses:</p>
+            <ul>
+                <li><strong>Pygbag</strong> - Converts Python/Pygame applications to WebAssembly</li>
+                <li><strong>WebAssembly</strong> - Runs Python code directly in your browser</li>
+                <li><strong>GitHub Pages</strong> - Free hosting for the web version</li>
+                <li><strong>Pygame</strong> - Cross-platform game development framework</li>
+            </ul>
+            
+            <h3>Browser Compatibility</h3>
+            <p>Works best on modern browsers with WebAssembly support:</p>
+            <ul>
+                <li>Chrome/Edge 57+</li>
+                <li>Firefox 52+</li>
+                <li>Safari 11+</li>
+                <li>Opera 44+</li>
+            </ul>
+        </div>
+        
+        <div class="info-section">
+            <h2>🎨 Fun Experimentation Ideas</h2>
+            <p>Try these experiments to explore the framework:</p>
+            <ul>
+                <li><strong>Faction Balancing</strong> - Try to maintain neutral standing with all factions</li>
+                <li><strong>Faction Extremes</strong> - Maximize reputation with one faction and see what happens</li>
+                <li><strong>Dialogue Exploration</strong> - Find all conversation branches and endings</li>
+                <li><strong>Speed Running</strong> - Complete the dialogue demo as quickly as possible</li>
+                <li><strong>Story Analysis</strong> - Examine how choices affect the narrative flow</li>
+            </ul>
+            
+            <p><strong>For Developers:</strong></p>
+            <ul>
+                <li>Fork the repository and create your own custom dialogues</li>
+                <li>Design new game states (exploration, combat, trading)</li>
+                <li>Create custom maps with NPCs and interactive elements</li>
+                <li>Implement new game mechanics (skills, equipment, resources)</li>
+                <li>Build a complete EVE-themed RPG adventure!</li>
+            </ul>
+        </div>
+    </div>
+    
+    <footer>
+        <p>&copy; 2025 AreteDriver - EVE Chronicle RPG</p>
+        <p>Licensed under MIT License | EVE Online™ is a trademark of CCP hf.</p>
+        <p>This is a fan project not affiliated with CCP Games</p>
+    </footer>
+
+</body>
+</html>
