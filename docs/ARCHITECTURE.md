@@ -400,9 +400,13 @@ def check_condition(self, condition: str) -> bool:
     elif condition.startswith("faction_"):
         # NEW: check faction standing
         parts = condition.split("_", 2)
-        faction = parts[1]
-        min_standing = int(parts[2])
-        return self.game_state.get("factions", {}).get(faction, 0) >= min_standing
+        if len(parts) >= 3:
+            faction = parts[1]
+            try:
+                min_standing = int(parts[2])
+                return self.game_state.get("factions", {}).get(faction, 0) >= min_standing
+            except ValueError:
+                return False
     return False
 ```
 
@@ -421,8 +425,13 @@ def apply_effect(self, effect: Dict[str, Any]) -> None:
     
     # NEW: Set quest flags
     if "quest_flag" in effect:
-        chronicle_id, flag_name = effect["quest_flag"].split(":", 1)
-        # Update quest manager
+        quest_flag_value = effect["quest_flag"]
+        if ":" in quest_flag_value:
+            chronicle_id, flag_name = quest_flag_value.split(":", 1)
+            # Update quest manager
+        else:
+            # Handle invalid format gracefully
+            pass
 ```
 
 ### Adding New Systems
