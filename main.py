@@ -4,9 +4,11 @@ EVE Chronicle RPG - Main Game Entry Point
 A demonstration of the EVE-themed RPG framework with dialogue and quest systems.
 """
 import asyncio
+import json
 import pygame
 import sys
 from pathlib import Path
+from typing import Dict, Any
 from core.state_manager import GameState, GameStateManager
 from systems.dialogue_engine import DialogueTree
 from systems.quest_manager import QuestManager
@@ -49,90 +51,68 @@ class DemoGameState(GameState):
     
     def start_demo_dialogue(self):
         """Start a demo dialogue conversation."""
-        # Create a simple demo dialogue
-        demo_dialogue_data = {
-            "start": "greeting",
-            "nodes": {
-                "greeting": {
-                    "text": "Greetings, capsuleer. Welcome to New Eden. I represent the diplomatic corps. How may I assist you today?",
-                    "choices": [
-                        {
-                            "text": "Tell me about the factions.",
-                            "next": "factions"
-                        },
-                        {
-                            "text": "I'd like to explore the galaxy.",
-                            "next": "explore"
-                        },
-                        {
-                            "text": "Farewell.",
-                            "next": None
-                        }
-                    ]
-                },
-                "factions": {
-                    "text": "The four major empires shape New Eden: Caldari (corporate efficiency), Gallente (democracy and freedom), Amarr (religious devotion), and Minmatar (freedom fighters). Each offers unique opportunities.",
-                    "choices": [
-                        {
-                            "text": "I support the Caldari cause.",
-                            "next": "caldari_support",
-                            "effect": {"faction": {"Caldari": 5}}
-                        },
-                        {
-                            "text": "The Gallente ideals resonate with me.",
-                            "next": "gallente_support",
-                            "effect": {"faction": {"Gallente": 5}}
-                        },
-                        {
-                            "text": "Tell me more about exploration.",
-                            "next": "explore"
-                        }
-                    ]
-                },
-                "caldari_support": {
-                    "text": "An excellent choice. The State values your loyalty. Your standing with Caldari has increased.",
-                    "choices": [
-                        {
-                            "text": "Thank you.",
-                            "next": "greeting"
-                        }
-                    ]
-                },
-                "gallente_support": {
-                    "text": "The Federation welcomes all who cherish liberty. Your standing with Gallente has increased.",
-                    "choices": [
-                        {
-                            "text": "Thank you.",
-                            "next": "greeting"
-                        }
-                    ]
-                },
-                "explore": {
-                    "text": "New Eden is vast with countless star systems to discover. Chronicles await brave capsuleers willing to forge their own destiny.",
-                    "choices": [
-                        {
-                            "text": "I'm ready for adventure.",
-                            "next": None
-                        },
-                        {
-                            "text": "Tell me about the factions first.",
-                            "next": "factions"
-                        }
-                    ]
+        # Use the example dialogue file instead of creating temp file
+        dialogue_path = Path("examples/demo_dialogue.json")
+        
+        # Verify the file exists, otherwise create dialogue data inline
+        if dialogue_path.exists():
+            self.dialogue_tree = DialogueTree(dialogue_path, self.game_state)
+        else:
+            # Fallback: Create dialogue data structure directly
+            # This is used if examples directory is not available
+            demo_dialogue_data = {
+                "start": "greeting",
+                "nodes": {
+                    "greeting": {
+                        "text": "Greetings, capsuleer. Welcome to New Eden. I represent the diplomatic corps. How may I assist you today?",
+                        "choices": [
+                            {"text": "Tell me about the factions.", "next": "factions"},
+                            {"text": "I'd like to explore the galaxy.", "next": "explore"},
+                            {"text": "Farewell.", "next": None}
+                        ]
+                    },
+                    "factions": {
+                        "text": "The four major empires shape New Eden: Caldari (corporate efficiency), Gallente (democracy and freedom), Amarr (religious devotion), and Minmatar (freedom fighters). Each offers unique opportunities.",
+                        "choices": [
+                            {"text": "I support the Caldari cause.", "next": "caldari_support", "effect": {"faction": {"Caldari": 5}}},
+                            {"text": "The Gallente ideals resonate with me.", "next": "gallente_support", "effect": {"faction": {"Gallente": 5}}},
+                            {"text": "Tell me more about exploration.", "next": "explore"}
+                        ]
+                    },
+                    "caldari_support": {
+                        "text": "An excellent choice. The State values your loyalty. Your standing with Caldari has increased.",
+                        "choices": [{"text": "Thank you.", "next": "greeting"}]
+                    },
+                    "gallente_support": {
+                        "text": "The Federation welcomes all who cherish liberty. Your standing with Gallente has increased.",
+                        "choices": [{"text": "Thank you.", "next": "greeting"}]
+                    },
+                    "explore": {
+                        "text": "New Eden is vast with countless star systems to discover. Chronicles await brave capsuleers willing to forge their own destiny.",
+                        "choices": [
+                            {"text": "I'm ready for adventure.", "next": None},
+                            {"text": "Tell me about the factions first.", "next": "factions"}
+                        ]
+                    }
                 }
             }
-        }
+            
+            # Create a minimal in-memory DialogueTree using custom initialization
+            self.dialogue_tree = self._create_dialogue_from_data(demo_dialogue_data)
         
-        # Save temporary dialogue file
-        import json
-        temp_dialogue_path = Path("/tmp/demo_dialogue.json")
-        temp_dialogue_path.parent.mkdir(parents=True, exist_ok=True)
-        with open(temp_dialogue_path, "w") as f:
-            json.dump(demo_dialogue_data, f)
-        
-        self.dialogue_tree = DialogueTree(temp_dialogue_path, self.game_state)
         self.in_dialogue = True
         self.menu_selection = 0
+    
+    def _create_dialogue_from_data(self, data: Dict[str, Any]) -> DialogueTree:
+        """Create DialogueTree from data without file I/O (for browser compatibility)."""
+        # Create a mock DialogueTree by monkey-patching initialization
+        tree = object.__new__(DialogueTree)
+        tree.path = None
+        tree.nodes = data["nodes"]
+        tree.start_id = data["start"]
+        tree.current_id = tree.start_id
+        tree.game_state = self.game_state
+        return tree
     
     def handle_event(self, event) -> None:
         if event.type == pygame.KEYDOWN:
