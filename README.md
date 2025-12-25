@@ -477,6 +477,17 @@ EVE Online and all associated names, factions, and lore are registered trademark
 
 ---
 
+## Support the Project
+
+If you enjoy this project, consider supporting development:
+
+- **In-Game**: Send ISK donations to **AreteDriver** in EVE Online
+- **Buy Me a Coffee**: [buymeacoffee.com/aretedriver](https://buymeacoffee.com/aretedriver)
+
+Your support helps keep these projects maintained and improving. o7
+
+---
+
 ## Acknowledgments
 
 - **CCP Games** - For creating the rich lore of New Eden
